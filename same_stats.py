@@ -67,18 +67,16 @@ all_targets = list(line_shapes)
 all_targets.extend(['circle', 'bullseye', 'dots'])
 initial_datasets = ['dino', 'rando', 'slant', 'big_slant']
 
-#
-# these are the initial datasets which are used in the paper
-# 
 def load_dataset(name="dino"):
+    """ these are the initial datasets which are used in the paper """
     if name == "dino":
         df = pd.read_csv("seed_datasets/Datasaurus_data.csv", header=None, names=['x','y'])
     elif name == "rando":
         df = pd.read_csv("seed_datasets/random_cloud.csv")
         df = df[['x', 'y']]
     elif name == "slant":
-    	df = pd.read_csv("seed_datasets/slanted_less.csv")
-    	df = df[['x', 'y']]
+        df = pd.read_csv("seed_datasets/slanted_less.csv")
+        df = df[['x', 'y']]
     elif name == "big_slant":
         df = pd.read_csv("seed_datasets/less_angled_blob.csv")
         df = df[['x', 'y']]
@@ -86,10 +84,8 @@ def load_dataset(name="dino"):
 
     return df.copy()
 
-#
-# This function calculates the summary statistics for the given set of points
-# 
 def get_values(df):
+    """This function calculates the summary statistics for the given set of points"""
     xm = df.x.mean()
     ym = df.y.mean()
     xsd = df.x.std()
@@ -98,11 +94,8 @@ def get_values(df):
 
     return [xm, ym, xsd, ysd, pc]
 
-#
-# checks to see if the statistics are still within the acceptable bounds
-# with df1 as the original dataset, and df2 as the one we are testing
-#
 def is_error_still_ok(df1, df2, decimals=2):
+    """is the error still acceptable"""
     r1 = get_values(df1)
     r2 = get_values(df2)
 
@@ -116,17 +109,15 @@ def is_error_still_ok(df1, df2, decimals=2):
 
     return np.max(er) == 0
 
-
-
 def lineMagnitude (x1, y1, x2, y2):
     lineMagnitude = math.sqrt(math.pow((x2 - x1), 2)+ math.pow((y2 - y1), 2))
     return lineMagnitude
-
 #
 # This function calcualtes the minimum distance between a point and a line, used
 # to determine if the points are getting closer to the target
 #
 def DistancePointLine (px, py, x1, y1, x2, y2):
+
     #http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/source.vba
     LineMag = lineMagnitude(x1, y1, x2, y2)
 
@@ -418,7 +409,7 @@ def run_pattern(df, target, iters = 100000, num_frames=100, decimals=2, shake=0.
             r_good = test_good
 
         # save this chart to the file
-        for x in xrange(write_frames.count(i)):
+        for x in range(write_frames.count(i)):
             save_scatter_and_results(r_good, target + "-image-"+format(int(frame_count), '05'), 150, labels = labels)
             #save_scatter(r_good, target + "-image-"+format(int(frame_count), '05'), 150)
             r_good.to_csv(target + "-data-" + format(int(frame_count), '05') + ".csv")
